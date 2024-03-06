@@ -1,11 +1,320 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Car-Game</title>
 </head>
+<style>
+    * {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    body {
+        background: url('assets/grass.png') no-repeat center;
+        background-size: cover;
+        height: 100vh;
+        display: grid;
+        place-items: center;
+    }
+
+    .carimg {
+        width: 14vw;
+        position: absolute;
+        border: 1px red solid;
+    }
+
+    .mycarimg {
+        width: 13vw;
+        top: 60vh;
+        position: relative;
+        border: 1px red solid;
+    }
+
+    #mycar {
+        top: 50vh;
+        left: 0vw;
+    }
+
+    #road {
+        background: url(assets/road.jpg) center repeat-y;
+        height: 1200vh;
+        width: 50vw;
+        position: relative;
+        top: -100vh;
+        z-index: -9;
+    }
+
+    #score {
+        font-size: 2rem;
+        top: 20px;
+        left: 20px;
+        position: absolute;
+    }
+
+    #start {
+        position: absolute;
+        font-size: 1rem;
+        top: 50vh;
+        left: 47vw;
+        padding: 10px;
+        border-radius: 50px;
+        background-color: rgb(244, 135, 19);
+        z-index: 102;
+    }
+
+    #enemycar1 {
+        display: grid;
+        place-items: center;
+        position: relative;
+        left: 21vw;
+        z-index: 101;
+
+
+    }
+
+    #enemycar2 {
+        display: grid;
+        place-items: center;
+        position: relative;
+        left: 7vw;
+        z-index: 101;
+
+    }
+
+    #enemycar3 {
+        display: grid;
+        place-items: center;
+        position: relative;
+        left: -7vw;
+        z-index: 101;
+
+    }
+
+    #enemycar4 {
+        display: grid;
+        place-items: center;
+        position: relative;
+        left: -21vw;
+        z-index: 101;
+
+    }
+
+    @keyframes car1 {
+        0% {
+            top: 0vh;
+        }
+
+        45% {
+            top: 43vh;
+        }
+
+        100% {
+            top: 100vh;
+        }
+    }
+
+    @keyframes car2 {
+        0% {
+            top: 0vh;
+        }
+
+        45% {
+            top: 70vh;
+        }
+
+        100% {
+            top: 100vh;
+        }
+    }
+
+    @keyframes car3 {
+        0% {
+            top: 0vh;
+        }
+
+        45% {
+            top: 20vh;
+        }
+
+        100% {
+            top: 100vh;
+        }
+    }
+
+    @keyframes car4 {
+        0% {
+            top: 0vh;
+        }
+
+        45% {
+            top: 44vh;
+        }
+
+        100% {
+            top: 100vh;
+        }
+    }
+</style>
+
 <body>
-    
+
+    <div id="score">Score: 0</div>
+    <button id="start" onclick="playAudio()">Start</button>
+    <div>
+        <div id="enemycar1">
+            <img style="transform: rotate(90deg);" id="mycarimg1" class="carimg" src="assets/car2.png" alt="">
+        </div>
+        <div id="enemycar2">
+            <img style="transform: rotate(-90deg);" id="mycarimg2" class="carimg" src="assets/car3.png" alt="">
+        </div>
+        <div id="enemycar3">
+            <img style="transform: rotate(90deg);" id="mycarimg3" class="carimg" src="assets/car2.png" alt="">
+        </div>
+        <div id="enemycar4">
+            <img style="transform: rotate(-90deg);" id="mycarimg4" class="carimg" src="assets/car3.png" alt="">
+
+        </div>
+        <div id="mycar"><img style="transform: rotate(90deg);" id="mycarimg" class="mycarimg" src="assets/car1.png"
+                alt=""></div>
+    </div>
+    <div id="road"></div>
+    <audio autoplay loop>
+        <source src="assets/sound.mp3" type="audio/mp3" />
+    </audio>
 </body>
+<audio id="myAudio" src="assets/sound.mp3"></audio>
+<script>
+    function playAudio() {
+        const audio = document.getElementById('myAudio');
+        audio.play();
+    }
+    let n = 0
+    document.getElementById('start').addEventListener("click", function () {
+
+        setInterval(() => {
+            num1 = Math.floor(Math.random() * (21 - 7 + 1) + 7)
+            document.getElementById("enemycar1").style.left = `${num1}vw`
+
+        }, 7000)
+        setInterval(() => {
+            num2 = Math.floor(Math.random() * (21 - 7 + 1) + 7)
+            document.getElementById("enemycar2").style.left = `${num2}vw`
+
+        }, 6000)
+        setInterval(() => {
+            num3 = Math.floor(Math.random() * (21 - 7 + 1) + 7)
+            document.getElementById("enemycar3").style.left = `-${num3}vw`
+
+        }, 5000)
+        setInterval(() => {
+            num4 = Math.floor(Math.random() * (21 - 7 + 1) + 7)
+            document.getElementById("enemycar4").style.left = `-${num4}vw`
+
+        }, 4000)
+        document.getElementById('start').style.display = 'none'
+        document.getElementById('enemycar1').style.animation = 'car1 7s linear infinite'
+        document.getElementById('enemycar2').style.animation = 'car2 6s linear infinite'
+        document.getElementById('enemycar3').style.animation = 'car3 5s linear infinite'
+        document.getElementById('enemycar4').style.animation = 'car4 4s linear infinite'
+
+        setInterval(() => {
+            document.getElementById('score').innerText = `Score: ${n}`
+            n = n + 1
+            var ecar1_left = Math.abs(document.getElementById('enemycar1').getBoundingClientRect().left)
+            var ecar2_left = Math.abs(document.getElementById('enemycar2').getBoundingClientRect().left)
+            var ecar3_left = Math.abs(document.getElementById('enemycar3').getBoundingClientRect().left)
+            var ecar4_left = Math.abs(document.getElementById('enemycar4').getBoundingClientRect().left)
+
+
+            var ecar1_right = Math.abs(document.getElementById('enemycar1').getBoundingClientRect().right)
+            var ecar2_right = Math.abs(document.getElementById('enemycar2').getBoundingClientRect().right)
+            var ecar3_right = Math.abs(document.getElementById('enemycar3').getBoundingClientRect().right)
+            var ecar4_right = Math.abs(document.getElementById('enemycar4').getBoundingClientRect().right)
+
+
+            var ecar1_top = Math.abs(document.getElementById('enemycar1').getBoundingClientRect().top)
+            var ecar2_top = Math.abs(document.getElementById('enemycar2').getBoundingClientRect().top)
+            var ecar3_top = Math.abs(document.getElementById('enemycar3').getBoundingClientRect().top)
+            var ecar4_top = Math.abs(document.getElementById('enemycar4').getBoundingClientRect().top)
+
+
+            var ecar1_bottom = Math.abs(document.getElementById('enemycar1').getBoundingClientRect().bottom)
+            var ecar2_bottom = Math.abs(document.getElementById('enemycar2').getBoundingClientRect().bottom)
+            var ecar3_bottom = Math.abs(document.getElementById('enemycar3').getBoundingClientRect().bottom)
+            var ecar4_bottom = Math.abs(document.getElementById('enemycar4').getBoundingClientRect().bottom)
+
+
+            var mycar_left = Math.abs(document.getElementById('enemycar1').getBoundingClientRect().left)
+            var mycar_right = Math.abs(document.getElementById('enemycar1').getBoundingClientRect().left)
+            var mycar_top = Math.abs(document.getElementById('enemycar1').getBoundingClientRect().left)
+            var mycar_bottom = Math.abs(document.getElementById('enemycar1').getBoundingClientRect().left)
+            if (mycar_left > 50 || mycar_right < -50) {
+                setTimeout(() => {
+                    alert(`GAME OVER!`)
+                })
+                location.reload()
+
+            }
+            if (((ecar1_left < mycar_left && mycar_left < ecar1_right) || (ecar1_left < mycar_right && mycar_right < ecar1_right)) && ((ecar1_top < mycar_top && mycar_top < ecar1_bottom) || (ecar1_top < mycar_bottom && mycar_bottom < ecar1_bottom))) {
+
+                setTimeout(() => {
+                    alert(`GAME OVER!`)
+                })
+                location.reload()
+
+            }
+            if (((ecar2_left < mycar_left && mycar_left < ecar2_right) || (ecar2_left < mycar_right && mycar_right < ecar2_right)) && ((ecar2_top < mycar_top && mycar_top < ecar2_bottom) || (ecar2_top < mycar_bottom && mycar_bottom < ecar2_bottom))) {
+
+                setTimeout(() => {
+                    alert(`GAME OVER!`)
+                })
+                location.reload()
+
+            }
+            if (((ecar3_left < mycar_left && mycar_left < ecar3_right) || (ecar3_left < mycar_right && mycar_right < ecar3_right)) && ((ecar3_top < mycar_top && mycar_top < ecar3_bottom) || (ecar3_top < mycar_bottom && mycar_bottom < ecar3_bottom))) {
+
+                setTimeout(() => {
+                    alert(`GAME OVER!`)
+                })
+                location.reload()
+
+            }
+            if (((ecar4_left < mycar_left && mycar_left < ecar4_right) || (ecar4_left < mycar_right && mycar_right < ecar4_right)) && ((ecar4_top < mycar_top && mycar_top < ecar4_bottom) || (ecar4_top < mycar_bottom && mycar_bottom < ecar4_bottom))) {
+
+                setTimeout(() => {
+                    alert(`GAME OVER!`)
+                })
+                location.reload()
+
+            }
+
+        }, 1000)
+
+        let t = 60
+        let l = 0
+        window.addEventListener("keydown", function (x) {
+            if (x.keyCode == 87) {
+                t = t - 2;
+            }
+            if (x.keyCode == 65) {
+                l = l - 2;
+            }
+            if (x.keyCode == 83) {
+                t = t + 2;
+            }
+            if (x.keyCode == 68) {
+                l = l + 2;
+            }
+            document.getElementById("mycarimg").style.top = `${t}vh`
+            document.getElementById("mycarimg").style.left = `${l}vw`
+
+
+        })
+
+    })
+</script>
+
 </html>
